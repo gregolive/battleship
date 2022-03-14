@@ -1,11 +1,16 @@
 const ship = (length) => {
-  const sunk = false;
-  const hits = [];
+  let sunk = false;
+  const positions = Array.from('O'.repeat(length));
 
-  const sayHello = () => console.log('hello!');
+  const hit = (index) => {
+    positions[index] = 'X';
+    sunk = (positions.every((pos) => pos === 'X'));
+  };
+
+  const isSunk = () => sunk;
 
   return {
-    length, sunk, hits, sayHello,
+    length, positions, hit, isSunk,
   };
 };
 
