@@ -1,28 +1,25 @@
-const ship = (length, angle, start) => {
-  let sunk = false;
-  const positions = Array.from('O'.repeat(length));
+const ship = (name, length) => {
+  const pieces = Array.from('O'.repeat(length));
+  const coords = [];
+
+  const placeOnBoard = (x, y, angle) => {
+    if (angle === 0) {
+      const xCoords = Array.from({ length }, (v, i) => i + x);
+      xCoords.forEach((el) => coords.push([el, y]));
+    } else {
+      const yCoords = Array.from({ length }, (v, i) => i + y);
+      yCoords.forEach((el) => coords.push([x, el]));
+    }
+  };
 
   const hit = (index) => {
-    positions[index] = 'X';
-    sunk = (positions.every((pos) => pos === 'X'));
+    pieces[index] = 'X';
   };
 
-  const isSunk = () => sunk;
-
-  const calcCoords = () => {
-    const coords = [];
-    if (angle === 0) {
-      const x = Array.from({ length }, (v, i) => i + start[0]);
-      x.forEach((el) => coords.push([el, start[1]]));
-    } else {
-      const y = Array.from({ length }, (v, i) => i + start[1]);
-      y.forEach((el) => coords.push([start[0], el]));
-    }
-    return coords;
-  };
+  const isSunk = () => pieces.every((piece) => piece === 'X');
 
   return {
-    length, angle, start, positions, hit, isSunk, calcCoords,
+    name, length, pieces, coords, placeOnBoard, hit, isSunk,
   };
 };
 
