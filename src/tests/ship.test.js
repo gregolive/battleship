@@ -1,7 +1,7 @@
-import ship from '../scripts/ship';
+import newShip from '../scripts/ship';
 
 describe('when a ship is created/placed', () => {
-  const myShip = ship('Boaty', 5);
+  const myShip = newShip('Boaty', 5);
   myShip.placeOnBoard(0, 0, 90);
 
   test('its name should be properly set', () => {
@@ -22,7 +22,7 @@ describe('when a ship is created/placed', () => {
 });
 
 describe('when a ship is hit', () => {
-  const myShip = ship('Boaty', 3);
+  const myShip = newShip('Boaty', 3);
   myShip.placeOnBoard(0, 0, 0);
   myShip.hit(1);
 

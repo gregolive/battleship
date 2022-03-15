@@ -1,4 +1,4 @@
-const ship = (name, length) => {
+const newShip = (name, length) => {
   const pieces = Array.from('O'.repeat(length));
   const coords = [];
 
@@ -21,4 +21,4 @@ const ship = (name, length) => {
   };
 };
 
-export default ship;
+export default newShip;
