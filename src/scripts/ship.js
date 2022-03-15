@@ -2,19 +2,17 @@ const ship = (name, length) => {
   const pieces = Array.from('O'.repeat(length));
   const coords = [];
 
-  const placeOnBoard = (x, y, angle) => {
+  const placeOnBoard = (row, col, angle) => {
     if (angle === 0) {
-      const xCoords = Array.from({ length }, (v, i) => i + x);
-      xCoords.forEach((el) => coords.push([el, y]));
+      const colEls = Array.from({ length }, (v, i) => i + col);
+      colEls.forEach((el) => coords.push([row, el]));
     } else {
-      const yCoords = Array.from({ length }, (v, i) => i + y);
-      yCoords.forEach((el) => coords.push([x, el]));
+      const rowEls = Array.from({ length }, (v, i) => i + row);
+      rowEls.forEach((el) => coords.push([el, col]));
     }
   };
 
-  const hit = (index) => {
-    pieces[index] = 'X';
-  };
+  const hit = (index) => { pieces[index] = 'X'; };
 
   const isSunk = () => pieces.every((piece) => piece === 'X');
 

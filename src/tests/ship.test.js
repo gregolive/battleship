@@ -1,11 +1,11 @@
 import ship from '../scripts/ship';
 
 describe('when a ship is created/placed', () => {
-  const myShip = ship(5);
+  const myShip = ship('Boaty', 5);
   myShip.placeOnBoard(0, 0, 90);
 
   test('its name should be properly set', () => {
-    expect(myShip.length).toEqual(5);
+    expect(myShip.name).toEqual('Boaty');
   });
 
   test('its length is properly set', () => {
@@ -17,12 +17,12 @@ describe('when a ship is created/placed', () => {
   });
 
   test('its coordinates are properly set', () => {
-    expect(myShip.coords).toEqual([[0, 0], [0, 1], [0, 2], [0, 3], [0, 4]]);
+    expect(myShip.coords).toEqual([[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]]);
   });
 });
 
 describe('when a ship is hit', () => {
-  const myShip = ship(3);
+  const myShip = ship('Boaty', 3);
   myShip.placeOnBoard(0, 0, 0);
   myShip.hit(1);
 
