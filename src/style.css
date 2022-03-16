@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Press+Start+2P&display=swap');
+
+:root {
+  --primary-font: "Press Start 2P", cursive;
+  --secondary-font: "Permanent Marker", cursive;
+  --bg-color: #2c2c54;
+  --text-color: #dfe0dc;
+  --highlight-color: #8a4fff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--primary-font);
+  margin: 0;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+a:hover {
+  color: var(--highlight-color);
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  font-family: var(--primary-font);
+}
+
+main {
+  box-sizing: border-box;
+  min-height: calc(100vh - 3rem);
+  padding: 2rem 1.5rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: clamp(1rem, 10vw, 2.25rem);
+  text-shadow: 3px 3px 1px var(--highlight-color);
+  margin: 0;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  padding-bottom: 1rem;
+}
+
+section {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialogue-box {
+  border: 2px solid var(--text-color);
+  padding: 1.5rem 2rem;
+  min-width: none;
+  transition: all 0.4s ease;
+}
+
+section:hover {
+  box-shadow: 6px 6px 1px var(--highlight-color);
+}
+
+.btn {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.4s ease;
+}
+
+.btn:hover {
+  background-color: var(--highlight-color);
+}
+
+.start-btn {
+  margin: 0 auto;
+}
+
+.start-btns {
+  display: flex;
+  gap: 2vw;
+  align-items: center;
+}
+
+footer {
+  border-top: 1px solid var(--text-color);
+  font-size: 0.8rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 480px) {
+  .start-btns {
+    flex-direction: column;
+  }
+}
