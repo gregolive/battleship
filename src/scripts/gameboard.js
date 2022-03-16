@@ -36,7 +36,6 @@ const newGameboard = () => {
       const ship = findShip(row, col);
       const piece = findPiece(ship, row, col);
       ship.hit(piece);
-      console.log(ship)
       updateCells(row, col, 'X');
     } else {
       updateCells(row, col, '');

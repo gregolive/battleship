@@ -47,7 +47,6 @@ describe('when all the ships on a board have sunk', () => {
   myGameboard.cells.forEach((row, rowInd) => {
     row.forEach((cell, cellInd) => { myGameboard.receiveAttack(rowInd, cellInd); });
   });
-  console.log(myGameboard.cells)
 
   test('it should notify that the game is over', () => {
     expect(myGameboard.isGameOver()).toBe(true);
