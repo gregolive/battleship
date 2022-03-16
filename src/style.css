@@ -6,6 +6,7 @@
   --bg-color: #2c2c54;
   --text-color: #dfe0dc;
   --highlight-color: #8a4fff;
+  --hit: #d81159;
 }
 
 body {
@@ -38,7 +39,7 @@ button {
 
 main {
   box-sizing: border-box;
-  min-height: calc(100vh - 3rem);
+  min-height: calc(100vh - 3rem - 4px);
   padding: 2rem 1rem;
   margin: 0 auto;
   display: flex;
@@ -52,6 +53,11 @@ h1 {
   margin: 0;
   line-height: 2.75rem;
   text-align: center;
+  transition: all 0.2s ease;
+}
+
+h1:hover {
+  text-shadow: -3px -3px 1px var(--highlight-color);
 }
 
 h2 {
@@ -156,9 +162,17 @@ section:hover > h2 {
   justify-content: center;
 }
 
-.enemy-board > * > * > .col:hover {
+.player-grid > * > .ship {
+  background-color: var(--text-color);
+}
+
+.enemy-grid > * > .col:hover {
   background-color: var(--highlight-color);
   cursor: pointer;
+}
+
+.enemy-grid > * > .ship {
+  background-color: var(--hit); /* Change to color */
 }
 
 footer {

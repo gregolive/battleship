@@ -1,11 +1,10 @@
 import newGameboard from './gameboard';
+import { getRandomInt } from './dom';
 
 const newPlayer = (difficulty) => {
   const gameboard = newGameboard();
 
   const attack = (opponent, row, col) => opponent.gameboard.receiveAttack(row, col);
-
-  const getRandomInt = (max) => Math.floor(Math.random() * max);
 
   const randomAttack = (opponent) => {
     let row = getRandomInt(10);
