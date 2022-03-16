@@ -23,9 +23,9 @@ const boardRow = () => {
   return row;
 };
 
-const boardGrid = () => {
+const boardGrid = (className) => {
   const grid = document.createElement('div');
-  grid.className = 'board-grid';
+  grid.className = `grid ${className}-grid`;
 
   for (let i = 0; i < 10; i += 1) {
     const row = boardRow();
@@ -43,7 +43,7 @@ const boardSection = (title, className) => {
 
   section.className = `board ${className}-board`;
   section.appendChild(heading);
-  section.appendChild(boardGrid());
+  section.appendChild(boardGrid(className));
 
   return section;
 };

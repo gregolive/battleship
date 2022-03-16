@@ -37,7 +37,7 @@ const newPlayer = (difficulty) => {
         testRow = row + j;
         testCol = col;
       }
-      if (gameboard.cells[testRow][testCol]) { return false; }
+      if (testRow > 9 || testCol > 9 || typeof gameboard.cells[testRow][testCol] !== 'undefined') { return false; }
     }
     return true;
   };
@@ -53,7 +53,6 @@ const newPlayer = (difficulty) => {
       }
       gameboard.placeShip(i, row, col, angle);
     }
-    console.log(gameboard.cells);
   };
 
   return {

@@ -1,39 +1,66 @@
 import newPlayer from './player';
 
-const newGame = () => {
+const newGame = (difficulty) => {
   const human = newPlayer(false);
   let computer;
   let turn = 1;
 
-  const setComputer = (difficulty) => {
-    computer = newPlayer(difficulty);
-    computer.placeRandomShips();
+  const addShipsToBoard = (player) => {
+    const grid = (player === human) ? document.querySelector('.player-grid') : document.querySelector('.enemy-grid');
+    player.gameboard.cells.forEach((row, i) => {
+      row.forEach((cell, j) => {
+        if (cell === 'O') { grid.childNodes.item(i).childNodes.item(j).textContent = 'O'; }
+      });
+    });
   };
 
-  const takeTurn = (row, col) => {
+  const setComputer = () => {
+    computer = newPlayer(difficulty);
+    computer.placeRandomShips();
+    addShipsToBoard(computer);
+  };
+
+  const getPlayerShips = () => {
+    human.gameboard.placeShip(0, 1, 1, 0);
+    human.gameboard.placeShip(1, 3, 1, 0);
+    human.gameboard.placeShip(2, 5, 1, 0);
+    human.gameboard.placeShip(3, 7, 1, 0);
+    human.gameboard.placeShip(4, 9, 1, 0);
+    addShipsToBoard(human);
+  };
+
+  const startGame = () => {
+    setComputer();
+    getPlayerShips();
+  };
+
+  const getPlayerMove = () => {
+
+  };
+
+  const takeTurn = () => {
     if (turn % 2 !== 0) {
-      human.makeMove(computer, row, col);
+      const coords = getPlayerMove();
+      human.makeMove(computer, coords[0], coords[1]);
     } else {
       computer.makeMove(human);
     }
     turn += turn;
   };
 
-  const addDummyShips = () => {
-    human.gameboard.placeShip(0, 1, 1, 0);
-    human.gameboard.placeShip(1, 3, 1, 0);
-    human.gameboard.placeShip(2, 5, 1, 0);
-    human.gameboard.placeShip(3, 7, 1, 0);
-    human.gameboard.placeShip(4, 9, 1, 0);
+  const updateBoard = () => {
+
   };
 
-  // Start new game
-  const start = (difficulty) => {
-    setComputer(difficulty);
-    addDummyShips();
+  const play = () => {
+    startGame();
+    while (human.gameboard.isGameOver() && computer.gameboard.isGameOver()) {
+      takeTurn();
+      updateBoard();
+    }
   };
 
-  start();
+  play();
 };
 
 export default newGame;
