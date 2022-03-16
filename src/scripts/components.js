@@ -2,6 +2,8 @@ const dialogBox = () => {
   const text = document.createElement('p');
   const section = document.createElement('section');
 
+  text.textContent = 'Place your Aircraft Carrier.';
+
   section.className = 'dialog-box';
   section.appendChild(text);
 
@@ -57,7 +59,7 @@ const board = () => {
 };
 
 const addBoard = () => {
-  const main = document.createElement('main');
+  const main = document.querySelector('main');
 
   document.querySelector('.new-game').remove();
   main.appendChild(dialogBox());

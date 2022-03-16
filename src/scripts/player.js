@@ -25,8 +25,39 @@ const newPlayer = (difficulty) => {
     }
   };
 
+  const checkPlacement = (i, row, col, angle) => {
+    const shipLength = gameboard.ships[i].length;
+    for (let j = 0; j < shipLength; j += 1) {
+      let testRow;
+      let testCol;
+      if (angle === 0) {
+        testRow = row;
+        testCol = col + j;
+      } else {
+        testRow = row + j;
+        testCol = col;
+      }
+      if (gameboard.cells[testRow][testCol]) { return false; }
+    }
+    return true;
+  };
+
+  const placeRandomShips = () => {
+    for (let i = 0; i < 5; i += 1) {
+      let row = getRandomInt(10);
+      let col = getRandomInt(10);
+      const angle = [0, 90][Math.floor(Math.random() * 2)];
+      while (checkPlacement(i, row, col, angle) === false) {
+        row = getRandomInt(10);
+        col = getRandomInt(10);
+      }
+      gameboard.placeShip(i, row, col, angle);
+    }
+    console.log(gameboard.cells);
+  };
+
   return {
-    difficulty, gameboard, makeMove,
+    difficulty, gameboard, makeMove, placeRandomShips,
   };
 };
 

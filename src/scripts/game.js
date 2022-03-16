@@ -5,7 +5,10 @@ const newGame = () => {
   let computer;
   let turn = 1;
 
-  const setComputer = (difficulty) => { computer = newPlayer(difficulty); };
+  const setComputer = (difficulty) => {
+    computer = newPlayer(difficulty);
+    computer.placeRandomShips();
+  };
 
   const takeTurn = (row, col) => {
     if (turn % 2 !== 0) {
@@ -16,9 +19,21 @@ const newGame = () => {
     turn += turn;
   };
 
-  return {
-    turn, human, computer, setComputer, takeTurn,
+  const addDummyShips = () => {
+    human.gameboard.placeShip(0, 1, 1, 0);
+    human.gameboard.placeShip(1, 3, 1, 0);
+    human.gameboard.placeShip(2, 5, 1, 0);
+    human.gameboard.placeShip(3, 7, 1, 0);
+    human.gameboard.placeShip(4, 9, 1, 0);
   };
+
+  // Start new game
+  const start = (difficulty) => {
+    setComputer(difficulty);
+    addDummyShips();
+  };
+
+  start();
 };
 
 export default newGame;
