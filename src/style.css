@@ -175,6 +175,10 @@ section:hover > h2 {
   opacity: 0.9;
 }
 
+.enemy-grid > * > .ship {
+  background-color: var(--ship-color);
+}
+
 .enemy-grid > * > .living-ship {
   background-color: var(--ship-color);
 }

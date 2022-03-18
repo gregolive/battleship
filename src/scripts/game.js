@@ -9,7 +9,7 @@ const playGame = async () => {
   const computer = newPlayer(difficulty);
 
   placeComputerShips(computer);
-  getPlayerShips(human);
+  await getPlayerShips(human);
   acceptMoves(human, computer);
 };
 

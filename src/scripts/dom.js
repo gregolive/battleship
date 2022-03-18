@@ -1,5 +1,7 @@
 import addBoard from './components';
 
+// Game setup
+
 const chooseDifficulty = async () => {
   const startBtns = Array.from(document.querySelectorAll('.start-btn'));
 
@@ -13,12 +15,11 @@ const chooseDifficulty = async () => {
   });
 };
 
-const addShipsToBoard = (player) => {
+const addShipToBoard = (player, shipNo) => {
   const grid = (player.difficulty === false) ? document.querySelector('.player-grid') : document.querySelector('.enemy-grid');
-  player.gameboard.cells.forEach((row, i) => {
-    row.forEach((cell, j) => {
-      if (cell === 'O') { grid.childNodes.item(i).childNodes.item(j).classList.add('ship'); }
-    });
+  const locations = player.gameboard.ships[shipNo].coords;
+  locations.forEach((c) => {
+    grid.childNodes.item(c[0]).childNodes.item(c[1]).classList.add('ship');
   });
 };
 
@@ -51,18 +52,37 @@ const placeComputerShips = (player) => {
       col = getRandomInt(10);
     }
     player.gameboard.placeShip(i, row, col, angle);
+    addShipToBoard(player, i);
   }
-  addShipsToBoard(player);
 };
 
-const getPlayerShips = (player) => {
-  player.gameboard.placeShip(0, 1, 1, 0);
-  player.gameboard.placeShip(1, 3, 1, 0);
-  player.gameboard.placeShip(2, 5, 1, 0);
-  player.gameboard.placeShip(3, 7, 1, 0);
-  player.gameboard.placeShip(4, 9, 1, 0);
-  addShipsToBoard(player);
+const placePlayerShip = async (player) => {
+  const grid = document.querySelector('.player-grid');
+  let shipNo = 0;
+
+  return new Promise((resolve) => {
+    grid.childNodes.forEach((row, i) => {
+      row.childNodes.forEach((col, j) => {
+        col.addEventListener('click', () => {
+          if (shipNo < 5) {
+            player.gameboard.placeShip(shipNo, i, j, 0);
+            addShipToBoard(player, shipNo);
+            shipNo += 1;
+          }
+          if (shipNo > 4) {
+            resolve();
+          }
+        });
+      });
+    });
+  });
 };
+
+const getPlayerShips = async (player) => {
+  await placePlayerShip(player);
+};
+
+// In game
 
 const checkSunk = (enemy, grid, row, col) => {
   const targetShip = enemy.gameboard.findShip(row, col);
