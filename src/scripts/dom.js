@@ -85,6 +85,8 @@ const updateBoard = (enemy, className, row, col) => {
   }
 };
 
+const updateDialogBox = (text) => { document.querySelector('.dialog-box').firstChild.textContent = text; };
+
 const playerMove = (opponent, row, col) => {
   updateBoard(opponent, 'enemy', row, col);
 };
@@ -96,17 +98,30 @@ const computerMove = (player, opponent) => {
   }
 };
 
+const rejectMoves = () => {
+  const boards = document.querySelector('.board-wrapper');
+  const gameoverBoards = boards.cloneNode(true);
+  boards.parentNode.replaceChild(gameoverBoards, boards);
+};
+
+const gameover = (player) => {
+  rejectMoves();
+  if (player.difficulty !== false) {
+    updateDialogBox('Game over. You win!');
+  } else {
+    updateDialogBox('Game over. Computer wins!');
+  }
+};
+
 const playRound = (player, opponent, row, col) => {
   if (player.makeMove(opponent, row, col)) {
     playerMove(opponent, row, col);
     if (!opponent.gameboard.isGameOver()) {
       computerMove(player, opponent);
     } else {
-      console.log('game over');
+      gameover(opponent);
     }
-    if (player.gameboard.isGameOver()) {
-      console.log('game over');
-    }
+    if (player.gameboard.isGameOver()) { gameover(player); }
   }
 };
 
