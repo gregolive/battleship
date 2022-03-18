@@ -64,28 +64,49 @@ const getPlayerShips = (player) => {
   addShipsToBoard(player);
 };
 
-const updateBoard = () => {
-
+const updateBoard = (className, row, col) => {
+  const grid = document.querySelector(`.${className}-grid`);
+  const target = grid.childNodes.item(row).childNodes.item(col);
+  target.textContent = 'O';
 };
 
-const getPlayerMove = async (player, opponent) => {
-  const grid = document.querySelector('.enemy-grid');
+const playerMove = (row, col) => {
+  updateBoard('enemy', row, col);
+};
 
-  return new Promise((resolve) => {
-    grid.childNodes.forEach((row, i) => {
-      row.forEach((col, j) => {
-        if (col.textContent === '') {
-          col.addEventListener('click', () => {
-            player.makeMove(opponent, i, j);
-            updateBoard();
-            resolve();
-          });
-        }
+const computerMove = (player, opponent) => {
+  for (let i = 0; i < opponent.difficulty; i += 1) {
+    console.log('attacking')
+    const target = opponent.makeMove(player);
+    updateBoard('player', target[0], target[1]);
+  }
+};
+
+const playRound = (player, opponent, row, col) => {
+  if (player.makeMove(opponent, row, col)) {
+    playerMove(row, col);
+    if (!player.gameboard.isGameOver()) {
+      computerMove(player, opponent);
+    } else {
+      console.log('game over');
+    }
+    if (opponent.gameboard.isGameOver()) {
+      console.log('game over');
+    }
+  }
+};
+
+const acceptMoves = (player, opponent) => {
+  const grid = document.querySelector('.enemy-grid');
+  grid.childNodes.forEach((row, i) => {
+    row.childNodes.forEach((col, j) => {
+      col.addEventListener('click', () => {
+        playRound(player, opponent, i, j);
       });
     });
   });
 };
 
 export {
-  chooseDifficulty, getRandomInt, placeComputerShips, getPlayerShips, getPlayerMove,
+  chooseDifficulty, getRandomInt, placeComputerShips, getPlayerShips, acceptMoves,
 };

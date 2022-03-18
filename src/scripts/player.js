@@ -6,22 +6,36 @@ const newPlayer = (difficulty) => {
 
   const attack = (opponent, row, col) => opponent.gameboard.receiveAttack(row, col);
 
+  const validAttack = (opponent, row, col) => {
+    console.log(opponent.gameboard);
+    const target = opponent.gameboard.cells[row][col];
+    if (target === 'X' || target === '') {
+      return false;
+    }
+    return true;
+  };
+
   const randomAttack = (opponent) => {
     let row = getRandomInt(10);
     let col = getRandomInt(10);
-    while (opponent.gameboard.cells[row][col] === ('X' || '')) {
+    while (!validAttack(opponent, row, col)) {
       row = getRandomInt(10);
       col = getRandomInt(10);
     }
-    attack(opponent, row, col);
+    return [row, col];
   };
 
   const makeMove = (opponent, row, col) => {
-    if (typeof row === 'undefined') {
-      for (let i = 0; i < difficulty; i += 1) { randomAttack(opponent); }
-    } else {
-      attack(opponent, row, col);
+    if (difficulty !== false) {
+      const target = randomAttack(opponent);
+      attack(opponent, target[0], target[1]);
+      return target;
     }
+    if (validAttack(opponent, row, col)) {
+      attack(opponent, row, col);
+      return true;
+    }
+    return false;
   };
 
   const checkPlacement = (i, row, col, angle) => {
