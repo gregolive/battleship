@@ -45,7 +45,7 @@ const newGameboard = () => {
   const isGameOver = () => ships.every((ship) => ship.isSunk());
 
   return {
-    cells, ships, placeShip, receiveAttack, isGameOver,
+    cells, ships, placeShip, findShip, receiveAttack, isGameOver,
   };
 };
 

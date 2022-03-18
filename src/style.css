@@ -189,6 +189,7 @@ section:hover > h2 {
 
 .col.ship.sunk {
   background-color: var(--hit-color);
+  color: var(--text-color);
 }
 
 footer {

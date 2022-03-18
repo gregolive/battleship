@@ -64,12 +64,22 @@ const getPlayerShips = (player) => {
   addShipsToBoard(player);
 };
 
+const checkSunk = (enemy, grid, row, col) => {
+  const targetShip = enemy.gameboard.findShip(row, col);
+  if (targetShip.isSunk()) {
+    targetShip.coords.forEach((coord) => {
+      grid.childNodes.item(coord[0]).childNodes.item(coord[1]).classList.add('sunk');
+    });
+  }
+};
+
 const updateBoard = (enemy, className, row, col) => {
   const grid = document.querySelector(`.${className}-grid`);
   const target = grid.childNodes.item(row).childNodes.item(col);
   target.classList.add('attack');
   if (enemy.gameboard.cells[row][col] === 'X') {
     target.textContent = 'X';
+    checkSunk(enemy, grid, row, col);
   } else {
     target.textContent = 'O';
   }
@@ -89,12 +99,12 @@ const computerMove = (player, opponent) => {
 const playRound = (player, opponent, row, col) => {
   if (player.makeMove(opponent, row, col)) {
     playerMove(opponent, row, col);
-    if (!player.gameboard.isGameOver()) {
+    if (!opponent.gameboard.isGameOver()) {
       computerMove(player, opponent);
     } else {
       console.log('game over');
     }
-    if (opponent.gameboard.isGameOver()) {
+    if (player.gameboard.isGameOver()) {
       console.log('game over');
     }
   }
