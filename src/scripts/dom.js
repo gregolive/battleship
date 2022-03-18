@@ -104,11 +104,21 @@ const rejectMoves = () => {
   boards.parentNode.replaceChild(gameoverBoards, boards);
 };
 
+const revealComputerShips = () => {
+  const ships = document.querySelector('.enemy-grid').querySelectorAll('.ship');
+  ships.forEach((cell) => {
+    if (!cell.classList.contains('attack')) {
+      cell.classList.add('living-ship');
+    }
+  });
+};
+
 const gameover = (player) => {
   rejectMoves();
   if (player.difficulty !== false) {
     updateDialogBox('Game over. You win!');
   } else {
+    revealComputerShips();
     updateDialogBox('Game over. Computer wins!');
   }
 };
