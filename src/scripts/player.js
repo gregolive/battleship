@@ -7,7 +7,6 @@ const newPlayer = (difficulty) => {
   const attack = (opponent, row, col) => opponent.gameboard.receiveAttack(row, col);
 
   const validAttack = (opponent, row, col) => {
-    console.log(opponent.gameboard);
     const target = opponent.gameboard.cells[row][col];
     if (target === 'X' || target === '') {
       return false;

@@ -6,7 +6,8 @@
   --bg-color: #2c2c54;
   --text-color: #dfe0dc;
   --highlight-color: #8a4fff;
-  --hit: #d81159;
+  --ship-color: #868698;
+  --hit-color: #d81159;
 }
 
 body {
@@ -155,6 +156,7 @@ section:hover > h2 {
 .col {
   background-color: var(--bg-color);
   color: var(--hit);
+  font-size: 2vw;
   width: 100%;
   height: 100%;
   transition: all 0.1s ease;
@@ -163,17 +165,30 @@ section:hover > h2 {
   justify-content: center;
 }
 
-.player-grid > * > .ship {
-  background-color: var(--text-color);
-}
-
 .enemy-grid > * > .col:hover {
   background-color: var(--highlight-color);
   cursor: pointer;
 }
 
+.player-grid > * > .ship {
+  background-color: var(--ship-color);
+  opacity: 0.9;
+}
+
 .enemy-grid > * > .ship {
-  background-color: var(--hit); /* Change to color */
+  background-color: var(--ship-color); /* Change to color */
+}
+
+.col.attack {
+  color: var(--text-color);
+}
+
+.col.ship.attack {
+  color: var(--hit-color);
+}
+
+.col.ship.sunk {
+  background-color: var(--hit-color);
 }
 
 footer {
@@ -189,6 +204,10 @@ footer {
   .board-wrapper {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .col {
+    font-size: 4vw;
   }
 }
 

@@ -64,27 +64,31 @@ const getPlayerShips = (player) => {
   addShipsToBoard(player);
 };
 
-const updateBoard = (className, row, col) => {
+const updateBoard = (enemy, className, row, col) => {
   const grid = document.querySelector(`.${className}-grid`);
   const target = grid.childNodes.item(row).childNodes.item(col);
-  target.textContent = 'O';
+  target.classList.add('attack');
+  if (enemy.gameboard.cells[row][col] === 'X') {
+    target.textContent = 'X';
+  } else {
+    target.textContent = 'O';
+  }
 };
 
-const playerMove = (row, col) => {
-  updateBoard('enemy', row, col);
+const playerMove = (opponent, row, col) => {
+  updateBoard(opponent, 'enemy', row, col);
 };
 
 const computerMove = (player, opponent) => {
   for (let i = 0; i < opponent.difficulty; i += 1) {
-    console.log('attacking')
     const target = opponent.makeMove(player);
-    updateBoard('player', target[0], target[1]);
+    updateBoard(player, 'player', target[0], target[1]);
   }
 };
 
 const playRound = (player, opponent, row, col) => {
   if (player.makeMove(opponent, row, col)) {
-    playerMove(row, col);
+    playerMove(opponent, row, col);
     if (!player.gameboard.isGameOver()) {
       computerMove(player, opponent);
     } else {
