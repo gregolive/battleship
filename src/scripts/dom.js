@@ -25,8 +25,8 @@ const addShipToBoard = (player, shipNo) => {
 
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 
-const checkPlacement = (player, i, row, col, angle) => {
-  const shipLength = player.gameboard.ships[i].length;
+const checkPlacement = (player, shipNo, row, col, angle) => {
+  const shipLength = player.gameboard.ships[shipNo].length;
   for (let j = 0; j < shipLength; j += 1) {
     let testRow;
     let testCol;
@@ -56,6 +56,12 @@ const placeComputerShips = (player) => {
   }
 };
 
+const finalizePlayerBoard = () => {
+  const board = document.querySelector('.player-board');
+  const finalBoard = board.cloneNode(true);
+  board.parentNode.replaceChild(finalBoard, board);
+};
+
 const placePlayerShip = async (player) => {
   const grid = document.querySelector('.player-grid');
   let shipNo = 0;
@@ -64,12 +70,14 @@ const placePlayerShip = async (player) => {
     grid.childNodes.forEach((row, i) => {
       row.childNodes.forEach((col, j) => {
         col.addEventListener('click', () => {
-          if (shipNo < 5) {
+          if (shipNo < 5 && !col.classList.contains('ship') && checkPlacement(player, shipNo, i, j, 0)) {
+            console.log('added ship');
             player.gameboard.placeShip(shipNo, i, j, 0);
             addShipToBoard(player, shipNo);
             shipNo += 1;
           }
           if (shipNo > 4) {
+            finalizePlayerBoard();
             resolve();
           }
         });
@@ -107,9 +115,7 @@ const updateBoard = (enemy, className, row, col) => {
 
 const updateDialogBox = (text) => { document.querySelector('.dialog-box').firstChild.textContent = text; };
 
-const playerMove = (opponent, row, col) => {
-  updateBoard(opponent, 'enemy', row, col);
-};
+const playerMove = (opponent, row, col) => { updateBoard(opponent, 'enemy', row, col); };
 
 const computerMove = (player, opponent) => {
   for (let i = 0; i < opponent.difficulty; i += 1) {
