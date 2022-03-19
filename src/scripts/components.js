@@ -25,6 +25,10 @@ const addRotateBtn = () => {
   box.appendChild(btn);
 };
 
+const addPlayAgainBtn = () => {
+
+};
+
 // Gameboards
 
 const boardRow = () => {
@@ -83,4 +87,4 @@ const addBoard = () => {
   main.appendChild(board());
 };
 
-export { addBoard, addRotateBtn };
+export { addBoard, addRotateBtn, addPlayAgainBtn };

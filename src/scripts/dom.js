@@ -1,4 +1,4 @@
-import { addBoard, addRotateBtn } from './components';
+import { addBoard, addRotateBtn, addPlayAgainBtn } from './components';
 
 // Dialog box
 
@@ -32,7 +32,7 @@ const chooseDifficulty = async () => {
   });
 };
 
-const calcDummyShip = (length, grid, row, col, rowNum, colNum) => {
+const calcHoverShip = (length, grid, row, col, rowNum, colNum) => {
   const elements = [col];
   const angle = document.querySelector('.angle').textContent;
   if (angle === '0') {
@@ -51,23 +51,19 @@ const enableGridHover = (grid, shipLength) => {
   grid.childNodes.forEach((row, i) => {
     row.childNodes.forEach((col, j) => {
       col.addEventListener('mouseover', () => {
-        const elements = calcDummyShip(shipLength, grid, row, col, i, j);
+        const elements = calcHoverShip(shipLength, grid, row, col, i, j);
         elements.forEach((el) => {
           el.classList.add('hover');
         });
       });
       col.addEventListener('mouseleave', () => {
-        const elements = calcDummyShip(shipLength, grid, row, col, i, j);
+        const elements = calcHoverShip(shipLength, grid, row, col, i, j);
         elements.forEach((el) => {
           el.classList.remove('hover');
         });
       });
     });
   });
-};
-
-const resetGridHover = () => {
-  document.querySelectorAll('.col').forEach((el) => el.classList.remove('hover'));
 };
 
 const domNewShip = (player, shipNo) => {
@@ -85,24 +81,18 @@ const placeComputerShips = (computer) => {
   }
 };
 
-const setPlayerBoard = () => {
+const resetPlayerBoard = () => {
   const board = document.querySelector('.player-board');
   const finalBoard = board.cloneNode(true);
   board.parentNode.replaceChild(finalBoard, board);
 };
 
-const startGame = (resolve) => {
-  setPlayerBoard();
-  resetGridHover();
-  updateDialogBox('Your move first. Click to fire a shot!');
-  resolve();
-};
-
-const placePlayerShip = async (player) => {
+const placePlayerShip = async (player, shipNo) => {
   const grid = document.querySelector(player.grid);
-  let shipNo = 0;
-  updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true);
-  enableGridHover(grid, player.gameboard.ships[shipNo].length);
+  const ship = player.gameboard.ships[shipNo];
+
+  updateDialogBox(`Place your ${ship.name}.`, true);
+  enableGridHover(grid, ship.length);
 
   return new Promise((resolve) => {
     grid.childNodes.forEach((row, i) => {
@@ -112,20 +102,33 @@ const placePlayerShip = async (player) => {
           if (player.checkShipPlacement(shipNo, i, j, angle)) {
             player.gameboard.placeShip(shipNo, i, j, angle);
             domNewShip(player, shipNo);
-            shipNo += 1;
-            if (shipNo <= 4) {
-              updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true);
-              enableGridHover(grid, player.gameboard.ships[shipNo].length);
-            }
+            resetPlayerBoard();
+            resolve();
           }
-          if (shipNo > 4) { startGame(resolve); }
         });
       });
     });
   });
 };
 
-const getPlayerShips = async (player) => { await placePlayerShip(player); };
+const addEnemyHover = () => {
+  const enemyGrid = document.querySelector('.enemy-grid');
+  Array.from(enemyGrid.querySelectorAll('.col')).forEach((cell) => { cell.classList.add('hover'); });
+};
+
+const startGame = () => {
+  updateDialogBox('Your move first. Click to fire a shot!');
+  addEnemyHover();
+};
+
+const getPlayerShips = async (player) => {
+  await placePlayerShip(player, 0);
+  await placePlayerShip(player, 1);
+  await placePlayerShip(player, 2);
+  await placePlayerShip(player, 3);
+  await placePlayerShip(player, 4);
+  startGame();
+};
 
 // In game
 
@@ -167,12 +170,13 @@ const revealComputerShips = () => {
 
 const gameover = (player) => {
   rejectMoves();
-  if (player.difficulty !== false) {
+  if (typeof player.difficulty !== 'undefined') {
     updateDialogBox('Game over. You win!');
   } else {
     revealComputerShips();
     updateDialogBox('Game over. Computer wins!');
   }
+  addPlayAgainBtn();
 };
 
 const playRound = (player, opponent, row, col) => {
