@@ -13,20 +13,37 @@ const dialogBox = () => {
 const addRotateBtn = () => {
   const box = document.querySelector('.dialog-box');
   const btn = document.createElement('btn');
-  const span = document.createElement('span');
+  const boxSpan = document.createElement('span');
+  const angleSpan = document.createElement('span');
 
-  span.textContent = '0';
-  span.className = 'angle';
+  boxSpan.className = 'box-span';
+  boxSpan.textContent = 'Angle: ';
 
-  btn.className = 'btn rotate-btn';
+  angleSpan.className = 'angle';
+  angleSpan.textContent = '0';
+
+  btn.className = 'btn box-btn';
   btn.textContent = 'Rotate Ship';
 
-  box.appendChild(span);
-  box.appendChild(btn);
+  boxSpan.appendChild(angleSpan);
+  boxSpan.innerHTML += '°';
+  boxSpan.appendChild(btn);
+  box.appendChild(boxSpan);
 };
 
 const addPlayAgainBtn = () => {
+  const box = document.querySelector('.dialog-box');
+  const span = document.createElement('span');
+  const link = document.createElement('a');
 
+  link.className = 'btn box-btn';
+  link.href = '.';
+  link.textContent = 'Play Again?';
+
+  span.className = 'box-span';
+
+  span.appendChild(link);
+  box.appendChild(span);
 };
 
 // Gameboards

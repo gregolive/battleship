@@ -12,7 +12,7 @@ class Computer extends Player {
   placeRandomShips = (shipNo) => {
     let row = this.getRandomInt(10);
     let col = this.getRandomInt(10);
-    const angle = [0, 90][Math.floor(Math.random() * 2)];
+    const angle = String([0, 90][Math.floor(Math.random() * 2)]);
     while (this.checkShipPlacement(shipNo, row, col, angle) === false) {
       row = this.getRandomInt(10);
       col = this.getRandomInt(10);

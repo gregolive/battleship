@@ -9,11 +9,11 @@ const changeAngle = () => {
 
 const updateDialogBox = (text, angle = false) => {
   document.querySelector('.dialog-box').firstChild.textContent = text;
-  if (angle === true && !document.querySelector('.rotate-btn')) {
+  if (angle === true && !document.querySelector('.box-span')) {
     addRotateBtn();
-    document.querySelector('.rotate-btn').addEventListener('click', changeAngle);
-  } else if (angle === false && document.querySelector('.rotate-btn')) {
-    document.querySelector('.rotate-btn').remove();
+    document.querySelector('.box-span').addEventListener('click', changeAngle);
+  } else if (angle === false && document.querySelector('.box-span')) {
+    document.querySelector('.box-span').remove();
   }
 };
 
@@ -162,7 +162,7 @@ const rejectMoves = () => {
 const revealComputerShips = () => {
   const ships = document.querySelector('.enemy-grid').querySelectorAll('.ship');
   ships.forEach((cell) => {
-    if (!cell.classList.contains('attack')) {
+    if (!cell.classList.contains('sunk')) {
       cell.classList.add('living-ship');
     }
   });

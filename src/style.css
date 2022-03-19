@@ -90,8 +90,8 @@ section {
   transition: all 0.4s ease;
 }
 
-.angle {
-  display: none;
+.box-span {
+  padding-top: 0.5rem;
 }
 
 .btn {
@@ -101,13 +101,13 @@ section {
   transition: all 0.4s ease;
 }
 
-.rotate-btn {
+.box-btn {
   background-color: transparent;
   color: var(--highlight-color);
   text-decoration: none;
 }
 
-.rotate-btn:hover {
+.box-btn:hover {
   text-decoration: underline;
 }
 
@@ -190,7 +190,6 @@ section:hover > h2 {
 
 .player-grid > * > .ship {
   background-color: var(--ship-color);
-  opacity: 0.9;
 }
 
 .enemy-grid > * > .living-ship {
