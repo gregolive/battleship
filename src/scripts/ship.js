@@ -3,7 +3,7 @@ const newShip = (name, length) => {
   const coords = [];
 
   const placeOnBoard = (row, col, angle) => {
-    if (angle === 0) {
+    if (angle === '0') {
       const colEls = Array.from({ length }, (v, i) => i + col);
       colEls.forEach((el) => coords.push([row, el]));
     } else {

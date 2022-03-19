@@ -84,11 +84,34 @@ section {
 .dialog-box {
   font-size: clamp(0.7rem, 5vw, 1rem);
   border: 2px solid var(--text-color);
-  text-align: center;
   box-sizing: border-box;
   padding: 1rem 1.5rem;
+  height: 5.5rem;
   width: clamp(16rem, 90vw, 70rem);
+  display: flex;
+  justify-content: center;
   transition: all 0.4s ease;
+}
+
+.angle {
+  display: none;
+}
+
+.btn {
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.4s ease;
+}
+
+.rotate-btn {
+  background-color: transparent;
+  color: var(--highlight-color);
+  text-decoration: none;
+}
+
+.rotate-btn:hover {
+  text-decoration: underline;
 }
 
 .new-game:hover,
@@ -100,20 +123,14 @@ section:hover > h2 {
   text-shadow: 2px 2px 1px var(--highlight-color);
 }
 
-.btn {
+.start-btn {
   background-color: var(--text-color);
   color: var(--bg-color);
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  transition: all 0.4s ease;
-}
-
-.btn:hover {
-  background-color: var(--highlight-color);
-}
-
-.start-btn {
   margin: 0 auto;
+}
+
+.start-btn:hover {
+  background-color: var(--highlight-color);
 }
 
 .start-btns {

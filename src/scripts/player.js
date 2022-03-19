@@ -23,7 +23,7 @@ class Player {
     for (let j = 0; j < shipLength; j += 1) {
       let testRow;
       let testCol;
-      if (angle === 0) {
+      if (angle === '0') {
         testRow = row;
         testCol = col + j;
       } else {

@@ -1,8 +1,21 @@
-import addBoard from './components';
+import { addBoard, addRotateBtn } from './components';
 
 // Dialog box
 
-const updateDialogBox = (text) => { document.querySelector('.dialog-box').firstChild.textContent = text; };
+const changeAngle = () => {
+  const angle = document.querySelector('.angle');
+  angle.textContent = (angle.textContent === '0') ? '90' : '0';
+};
+
+const updateDialogBox = (text, angle = false) => {
+  document.querySelector('.dialog-box').firstChild.textContent = text;
+  if (angle === true && !document.querySelector('.rotate-btn')) {
+    addRotateBtn();
+    document.querySelector('.rotate-btn').addEventListener('click', changeAngle);
+  } else if (angle === false && document.querySelector('.rotate-btn')) {
+    document.querySelector('.rotate-btn').remove();
+  }
+};
 
 // Game setup
 
@@ -43,17 +56,18 @@ const finalizePlayerBoard = () => {
 const placePlayerShip = async (player) => {
   const grid = document.querySelector(player.grid);
   let shipNo = 0;
-  updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`);
+  updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true);
 
   return new Promise((resolve) => {
     grid.childNodes.forEach((row, i) => {
       row.childNodes.forEach((col, j) => {
         col.addEventListener('click', () => {
-          if (player.checkShipPlacement(shipNo, i, j, 0)) {
-            player.gameboard.placeShip(shipNo, i, j, 0);
+          const angle = document.querySelector('.angle').textContent;
+          if (player.checkShipPlacement(shipNo, i, j, angle)) {
+            player.gameboard.placeShip(shipNo, i, j, angle);
             domNewShip(player, shipNo);
-            updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`);
             shipNo += 1;
+            if (shipNo <= 4) { updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true); }
           }
           if (shipNo > 4) {
             finalizePlayerBoard();

@@ -1,3 +1,5 @@
+// Dialog box
+
 const dialogBox = () => {
   const text = document.createElement('p');
   const section = document.createElement('section');
@@ -7,6 +9,23 @@ const dialogBox = () => {
 
   return section;
 };
+
+const addRotateBtn = () => {
+  const box = document.querySelector('.dialog-box');
+  const btn = document.createElement('btn');
+  const span = document.createElement('span');
+
+  span.textContent = '0';
+  span.className = 'angle';
+
+  btn.className = 'btn rotate-btn';
+  btn.textContent = 'Rotate Ship';
+
+  box.appendChild(span);
+  box.appendChild(btn);
+};
+
+// Gameboards
 
 const boardRow = () => {
   const row = document.createElement('div');
@@ -64,4 +83,4 @@ const addBoard = () => {
   main.appendChild(board());
 };
 
-export default addBoard;
+export { addBoard, addRotateBtn };
