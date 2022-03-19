@@ -2,7 +2,7 @@ import newShip from '../scripts/ship';
 
 describe('when a ship is created/placed', () => {
   const myShip = newShip('Boaty', 5);
-  myShip.placeOnBoard(0, 0, 90);
+  myShip.placeOnBoard(0, 0, '90');
 
   test('its name should be properly set', () => {
     expect(myShip.name).toEqual('Boaty');
@@ -23,7 +23,7 @@ describe('when a ship is created/placed', () => {
 
 describe('when a ship is hit', () => {
   const myShip = newShip('Boaty', 3);
-  myShip.placeOnBoard(0, 0, 0);
+  myShip.placeOnBoard(0, 0, '0');
   myShip.hit(1);
 
   test('its positions are updated with hit marker', () => {

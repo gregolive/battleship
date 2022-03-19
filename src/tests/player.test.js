@@ -17,7 +17,7 @@ describe('when a player attacks', () => {
   const player2 = new Player();
 
   test('it should send the move to the opponent board', () => {
-    player2.gameboard.placeShip(0, 0, 0, 0);
+    player2.gameboard.placeShip(0, 0, 0, '0');
     player1.attack(player2, 0, 0);
     expect(player2.gameboard.cells[0][0]).toEqual('X');
   });
