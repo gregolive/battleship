@@ -1,40 +1,24 @@
-import newPlayer from '../scripts/player';
+import Player from '../scripts/player';
 
 describe('when a player is created', () => {
-  const humanPlayer = newPlayer(false);
-  const computerPlayer = newPlayer(2);
+  const humanPlayer = new Player(false);
 
   test('it should have no difficulty set if human', () => {
     expect(humanPlayer.difficulty).toBeFalsy();
   });
 
-  test('it should have a difficulty set if computer', () => {
-    expect(computerPlayer.difficulty).toBe(2);
-  });
-
-  test('it should have a gameboard', () => {
-    expect(computerPlayer.gameboard).toBeTruthy();
+  test('it should have a gameboard set', () => {
+    expect(humanPlayer.gameboard).toBeTruthy();
   });
 });
 
-describe('when a player makes a move', () => {
-  const humanPlayer = newPlayer(false);
-  const computerPlayer = newPlayer(2);
+describe('when a player attacks', () => {
+  const player1 = new Player();
+  const player2 = new Player();
 
   test('it should send the move to the opponent board', () => {
-    computerPlayer.gameboard.placeShip(0, 0, 0, 0);
-    humanPlayer.makeMove(computerPlayer, 0, 0);
-    expect(computerPlayer.gameboard.cells[0][0]).toEqual('X');
-  });
-
-  test('it should be random for a computer player', () => {
-    computerPlayer.makeMove(humanPlayer);
-    expect(humanPlayer.gameboard.cells.some((row) => row.includes(''))).toBeTruthy();
-  });
-
-  test('it should attack multiple times relative to difficulty level', () => {
-    let count = 0;
-    humanPlayer.gameboard.cells.forEach((r) => r.forEach((c) => { if (c === '') { count += 1; } }));
-    expect(count).toEqual(computerPlayer.difficulty);
+    player2.gameboard.placeShip(0, 0, 0, 0);
+    player1.attack(player2, 0, 0);
+    expect(player2.gameboard.cells[0][0]).toEqual('X');
   });
 });

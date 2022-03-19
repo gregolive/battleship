@@ -1,5 +1,4 @@
 import Player from './player';
-import { domUpdateBoard } from './dom';
 
 class Computer extends Player {
   constructor(difficulty) {
@@ -10,35 +9,38 @@ class Computer extends Player {
     this.getRandomInt = (max) => Math.floor(Math.random() * max);
   }
 
-  placeRandomShips = () => {
-    for (let i = 0; i < 5; i += 1) {
-      let row = this.getRandomInt(10);
-      let col = this.getRandomInt(10);
-      const angle = [0, 90][Math.floor(Math.random() * 2)];
-      while (this.checkShipPlacement(i, row, col, angle) === false) {
-        row = this.getRandomInt(10);
-        col = this.getRandomInt(10);
-      }
-      this.placeNewShip(i, row, col, angle);
+  placeRandomShips = (shipNo) => {
+    let row = this.getRandomInt(10);
+    let col = this.getRandomInt(10);
+    const angle = [0, 90][Math.floor(Math.random() * 2)];
+    while (this.checkShipPlacement(shipNo, row, col, angle) === false) {
+      row = this.getRandomInt(10);
+      col = this.getRandomInt(10);
     }
+    this.placeNewShip(shipNo, row, col, angle);
   };
 
-  randomAttack = (opponent) => {
+  getRandomAttack = (opponent) => {
     let row = this.getRandomInt(10);
     let col = this.getRandomInt(10);
     while (!this.validAttack(opponent, row, col)) {
       row = this.getRandomInt(10);
       col = this.getRandomInt(10);
     }
-    this.attack(opponent, row, col);
-    domUpdateBoard(opponent, row, col);
+    return [row, col];
   };
 
-  makeMove = (opponent) => {
+  randomAttack = (opponent) => {
+    const attacks = [];
+    let row;
+    let col;
     for (let i = 0; i < this.difficulty; i += 1) {
-      this.randomAttack(opponent);
-      if (opponent.gameboard.isGameOver()) { return; }
+      [row, col] = this.getRandomAttack(opponent);
+      this.attack(opponent, row, col);
+      attacks.push([row, col]);
+      if (opponent.gameboard.isGameOver()) { return attacks; }
     }
+    return attacks;
   };
 }
 

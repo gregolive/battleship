@@ -19,11 +19,19 @@ const chooseDifficulty = async () => {
   });
 };
 
-const domNewShip = (grid, pieceCoords) => {
-  const domGrid = document.querySelector(grid);
+const domNewShip = (player, shipNo) => {
+  const pieceCoords = player.gameboard.ships[shipNo].coords;
+  const domGrid = document.querySelector(player.grid);
   pieceCoords.forEach((coord) => {
     domGrid.childNodes.item(coord[0]).childNodes.item(coord[1]).classList.add('ship');
   });
+};
+
+const placeComputerShips = (computer) => {
+  for (let i = 0; i < 5; i += 1) {
+    computer.placeRandomShips(i);
+    domNewShip(computer, i);
+  }
 };
 
 const finalizePlayerBoard = () => {
@@ -42,7 +50,8 @@ const placePlayerShip = async (player) => {
       row.childNodes.forEach((col, j) => {
         col.addEventListener('click', () => {
           if (player.checkShipPlacement(shipNo, i, j, 0)) {
-            player.placeNewShip(shipNo, i, j, 0);
+            player.gameboard.placeShip(shipNo, i, j, 0);
+            domNewShip(player, shipNo);
             updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`);
             shipNo += 1;
           }
@@ -108,9 +117,11 @@ const gameover = (player) => {
 };
 
 const playRound = (player, opponent, row, col) => {
-  player.makeMove(opponent, row, col);
+  player.attack(opponent, row, col);
+  domUpdateBoard(opponent, row, col);
   if (!opponent.gameboard.isGameOver()) {
-    opponent.makeMove(player, opponent);
+    const computerMoves = opponent.randomAttack(player);
+    computerMoves.forEach((m) => domUpdateBoard(player, m[0], m[1]));
   } else {
     gameover(opponent);
   }
@@ -131,5 +142,5 @@ const acceptMoves = (player, opponent) => {
 };
 
 export {
-  chooseDifficulty, getPlayerShips, acceptMoves, domNewShip, domUpdateBoard,
+  chooseDifficulty, placeComputerShips, getPlayerShips, acceptMoves,
 };
