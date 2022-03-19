@@ -1,45 +1,52 @@
 import newGameboard from './gameboard';
-import { getRandomInt } from './dom';
+import { domNewShip, domUpdateBoard } from './dom';
 
-const newPlayer = (difficulty) => {
-  const gameboard = newGameboard();
+class Player {
+  constructor() {
+    this.gameboard = newGameboard();
+    this.grid = '.player-grid';
 
-  const attack = (opponent, row, col) => opponent.gameboard.receiveAttack(row, col);
+    this.attack = (opponent, row, col) => {
+      opponent.gameboard.receiveAttack(row, col);
+    };
 
-  const validAttack = (opponent, row, col) => {
-    const target = opponent.gameboard.cells[row][col];
-    if (target === 'X' || target === '') {
-      return false;
+    this.validAttack = (opponent, row, col) => {
+      const target = opponent.gameboard.cells[row][col];
+      if (target === 'X' || target === '') {
+        return false;
+      }
+      return true;
+    };
+  }
+
+  placeNewShip = (shipNo, row, col, angle) => {
+    this.gameboard.placeShip(shipNo, row, col, angle);
+
+    const pieceCoords = this.gameboard.ships[shipNo].coords;
+    domNewShip(this.grid, pieceCoords);
+  };
+
+  checkShipPlacement = (shipNo, row, col, angle) => {
+    const shipLength = this.gameboard.ships[shipNo].length;
+    for (let j = 0; j < shipLength; j += 1) {
+      let testRow;
+      let testCol;
+      if (angle === 0) {
+        testRow = row;
+        testCol = col + j;
+      } else {
+        testRow = row + j;
+        testCol = col;
+      }
+      if (testRow > 9 || testCol > 9 || typeof this.gameboard.cells[testRow][testCol] !== 'undefined') { return false; }
     }
     return true;
   };
 
-  const randomAttack = (opponent) => {
-    let row = getRandomInt(10);
-    let col = getRandomInt(10);
-    while (!validAttack(opponent, row, col)) {
-      row = getRandomInt(10);
-      col = getRandomInt(10);
-    }
-    return [row, col];
+  makeMove = (opponent, row, col) => {
+    this.attack(opponent, row, col);
+    domUpdateBoard(opponent, row, col);
   };
+}
 
-  const makeMove = (opponent, row, col) => {
-    if (difficulty !== false) {
-      const target = randomAttack(opponent);
-      attack(opponent, target[0], target[1]);
-      return target;
-    }
-    if (validAttack(opponent, row, col)) {
-      attack(opponent, row, col);
-      return true;
-    }
-    return false;
-  };
-
-  return {
-    difficulty, gameboard, makeMove,
-  };
-};
-
-export default newPlayer;
+export default Player;

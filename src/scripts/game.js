@@ -1,14 +1,15 @@
-import newPlayer from './player';
+import Player from './player';
+import Computer from './computer';
 import {
-  chooseDifficulty, placeComputerShips, getPlayerShips, acceptMoves,
+  chooseDifficulty, getPlayerShips, acceptMoves,
 } from './dom';
 
 const playGame = async () => {
   const difficulty = await chooseDifficulty();
-  const human = newPlayer(false);
-  const computer = newPlayer(difficulty);
+  const human = new Player();
+  const computer = new Computer(difficulty);
 
-  placeComputerShips(computer);
+  computer.placeRandomShips();
   await getPlayerShips(human);
   acceptMoves(human, computer);
 };

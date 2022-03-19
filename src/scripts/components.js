@@ -2,8 +2,6 @@ const dialogBox = () => {
   const text = document.createElement('p');
   const section = document.createElement('section');
 
-  text.textContent = 'Place your Aircraft Carrier.';
-
   section.className = 'dialog-box';
   section.appendChild(text);
 
