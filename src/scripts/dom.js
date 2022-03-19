@@ -32,6 +32,44 @@ const chooseDifficulty = async () => {
   });
 };
 
+const calcDummyShip = (length, grid, row, col, rowNum, colNum) => {
+  const elements = [col];
+  const angle = document.querySelector('.angle').textContent;
+  if (angle === '0') {
+    for (let i = 1; i < length; i += 1) {
+      if (colNum + i < 10) { elements.push(row.childNodes[colNum + i]); }
+    }
+  } else {
+    for (let i = 1; i < length; i += 1) {
+      if (rowNum + i < 10) { elements.push(grid.childNodes[rowNum + i].childNodes[colNum]); }
+    }
+  }
+  return elements;
+};
+
+const enableGridHover = (grid, shipLength) => {
+  grid.childNodes.forEach((row, i) => {
+    row.childNodes.forEach((col, j) => {
+      col.addEventListener('mouseover', () => {
+        const elements = calcDummyShip(shipLength, grid, row, col, i, j);
+        elements.forEach((el) => {
+          el.classList.add('hover');
+        });
+      });
+      col.addEventListener('mouseleave', () => {
+        const elements = calcDummyShip(shipLength, grid, row, col, i, j);
+        elements.forEach((el) => {
+          el.classList.remove('hover');
+        });
+      });
+    });
+  });
+};
+
+const resetGridHover = () => {
+  document.querySelectorAll('.col').forEach((el) => el.classList.remove('hover'));
+};
+
 const domNewShip = (player, shipNo) => {
   const pieceCoords = player.gameboard.ships[shipNo].coords;
   const domGrid = document.querySelector(player.grid);
@@ -47,16 +85,24 @@ const placeComputerShips = (computer) => {
   }
 };
 
-const finalizePlayerBoard = () => {
+const setPlayerBoard = () => {
   const board = document.querySelector('.player-board');
   const finalBoard = board.cloneNode(true);
   board.parentNode.replaceChild(finalBoard, board);
+};
+
+const startGame = (resolve) => {
+  setPlayerBoard();
+  resetGridHover();
+  updateDialogBox('Your move first. Click to fire a shot!');
+  resolve();
 };
 
 const placePlayerShip = async (player) => {
   const grid = document.querySelector(player.grid);
   let shipNo = 0;
   updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true);
+  enableGridHover(grid, player.gameboard.ships[shipNo].length);
 
   return new Promise((resolve) => {
     grid.childNodes.forEach((row, i) => {
@@ -67,13 +113,12 @@ const placePlayerShip = async (player) => {
             player.gameboard.placeShip(shipNo, i, j, angle);
             domNewShip(player, shipNo);
             shipNo += 1;
-            if (shipNo <= 4) { updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true); }
+            if (shipNo <= 4) {
+              updateDialogBox(`Place your ${player.gameboard.ships[shipNo].name}.`, true);
+              enableGridHover(grid, player.gameboard.ships[shipNo].length);
+            }
           }
-          if (shipNo > 4) {
-            finalizePlayerBoard();
-            updateDialogBox('Your move first. Click to fire a shot!');
-            resolve();
-          }
+          if (shipNo > 4) { startGame(resolve); }
         });
       });
     });
