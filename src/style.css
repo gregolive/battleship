@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 :root {
   --primary-font: "Press Start 2P", cursive;
-  --secondary-font: "Permanent Marker", cursive;
   --bg-color: #2c2c54;
   --text-color: #dfe0dc;
   --highlight-color: #8a4fff;
