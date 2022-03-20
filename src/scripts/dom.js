@@ -2,19 +2,53 @@ import { addBoard, addRotateBtn, addPlayAgainBtn } from './components';
 
 // Dialog box
 
+const updateDialogBox = (text) => { document.querySelector('.dialog-box').firstChild.textContent = text; };
+
 const changeAngle = () => {
   const angle = document.querySelector('.angle');
   angle.textContent = (angle.textContent === '0') ? '90' : '0';
 };
 
-const updateDialogBox = (text, angle = false) => {
-  document.querySelector('.dialog-box').firstChild.textContent = text;
-  if (angle === true && !document.querySelector('.box-span')) {
+const updatePlayerShip = (text) => {
+  updateDialogBox(text);
+  if (!document.querySelector('.box-span')) {
     addRotateBtn();
     document.querySelector('.box-span').addEventListener('click', changeAngle);
-  } else if (angle === false && document.querySelector('.box-span')) {
-    document.querySelector('.box-span').remove();
   }
+};
+
+const getRoundMessages = (player, computerMoves) => {
+  const messages = [];
+  const hitShips = [];
+  computerMoves.forEach((m) => {
+    const ship = player.gameboard.findShip(m[0], m[1]);
+    if (ship !== undefined) {
+      if (ship.isSunk()) {
+        if (hitShips.length > 0 && !hitShips.includes(ship)) {
+          messages.push(` and sunk your ${ship.name}`);
+        } else if (!hitShips.includes(ship)) {
+          messages.push(` sunk your ${ship.name}`);
+        }
+      } else if (hitShips.length > 0 && !hitShips.includes(ship)) {
+        messages.push(` and hit your ${ship.name}`);
+      } else {
+        messages.push(` hit your ${ship.name}`);
+      }
+      hitShips.push(ship);
+    }
+  });
+  return messages;
+};
+
+const updateComputerMove = (player, computerMoves) => {
+  const messages = getRoundMessages(player, computerMoves);
+  let text = 'The computer';
+  if (messages.length === 0) {
+    text += ' missed their shots';
+  } else {
+    messages.forEach((msg) => { text += msg; });
+  }
+  updateDialogBox(`${text}!`);
 };
 
 // Game setup
@@ -91,7 +125,7 @@ const placePlayerShip = async (player, shipNo) => {
   const grid = document.querySelector(player.grid);
   const ship = player.gameboard.ships[shipNo];
 
-  updateDialogBox(`Place your ${ship.name}.`, true);
+  updatePlayerShip(`Place your ${ship.name}.`);
   enableGridHover(grid, ship.length);
 
   return new Promise((resolve) => {
@@ -118,6 +152,7 @@ const addEnemyHover = () => {
 
 const startGame = () => {
   updateDialogBox('Your move first. Click to fire a shot!');
+  document.querySelector('.box-span').remove();
   addEnemyHover();
 };
 
@@ -185,6 +220,7 @@ const playRound = (player, opponent, row, col) => {
   if (!opponent.gameboard.isGameOver()) {
     const computerMoves = opponent.randomAttack(player);
     computerMoves.forEach((m) => domUpdateBoard(player, m[0], m[1]));
+    updateComputerMove(player, computerMoves);
   } else {
     gameover(opponent);
   }
